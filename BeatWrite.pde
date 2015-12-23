@@ -1,20 +1,3 @@
-
-
-/**
-  * This sketch demonstrates how to use the BeatDetect object in FREQ_ENERGY mode.<br />
-  * You can use <code>isKick</code>, <code>isSnare</code>, </code>isHat</code>, <code>isRange</code>, 
-  * and <code>isOnset(int)</code> to track whatever kind of beats you are looking to track, they will report 
-  * true or false based on the state of the analysis. To "tick" the analysis you must call <code>detect</code> 
-  * with successive buffers of audio. You can do this inside of <code>draw</code>, but you are likely to miss some 
-  * audio buffers if you do this. The sketch implements an <code>AudioListener</code> called <code>BeatListener</code> 
-  * so that it can call <code>detect</code> on every buffer of audio processed by the system without repeating a buffer 
-  * or missing one.
-  * <p>
-  * This sketch plays an entire song so it may be a little slow to load.
-  */
-
-import processing.serial.*;
-import ddf.minim.*;
 import ddf.minim.analysis.*;
 import cc.arduino.*;
 import java.util.Arrays;
@@ -31,12 +14,12 @@ PImage img;
 public double l2(int a){
   return Math.log(a) / Math.log(2);
 }
+
 void setup() {
   count = 8;
   minim = new Minim(this);
   arduino = new Arduino(this, Arduino.list()[4], 57600);
-  song = minim.loadFile("test2.mp3", 512); // original 4096
-  img = loadImage("laDefense.jpg");
+  song = minim.loadFile("test2.mp3", 512);
   
   song.play();
   
