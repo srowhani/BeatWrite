@@ -20,26 +20,28 @@ void setup() {
   minim = new Minim(this);
   arduino = new Arduino(this, Arduino.list()[4], 57600);
   song = minim.loadFile("test2.mp3", 512);
-  
+
   song.play();
-  
+
   beat = new BeatDetect();
   fft = new FFT(song.bufferSize(), song.sampleRate());
-  bl = new BeatListener(beat, song);  
+  bl = new BeatListener(beat, song);
   for(int i = 0 ; i < count ; i++)
-    arduino.pinMode(i+2, Arduino.OUTPUT); 
+    arduino.pinMode(i+2, Arduino.OUTPUT);
 }
 
 void draw() {
   fft.forward(song.mix);
-  int[] obj_array = new int[fft.specSize()];
-  for(int i = 0; i < fft.specSize(); i++){
-    obj_array[i] = Math.round(fft.getBand(i));
-  }
-  int segmentSize = Math.round(fft.specSize() / count),
-      total = 0, 
-      average = 0;
+  int size = fft.specSize();
+  int segmentSize = Math.round(size / count);
+  int total = 0;
+  int average = 0;
+  int[] obj_array = new int[size];
   int[] values = new int[count];
+
+  for(int i = 0; i < size; i++)
+    obj_array[i] = Math.round(fft.getBand(i));
+
   for(int i = 0 ; i < count ; i++){
     int[] segment = Arrays.copyOfRange(obj_array, i*segmentSize, (i+1)*segmentSize);
     for(int obj : segment)
